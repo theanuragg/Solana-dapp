@@ -1,18 +1,17 @@
-import create, { State } from "zustand";
+import create from "zustand";
 import produce from "immer";
-import notifications from "utils/notifications";
 
-interface NotificationStore extends State{
+interface NotificationStore {
   notifications: Array<{
     type: string;
     message: string;
     description: string;
     txid?: string;
   }>;
-  set: (x: any) => void;
+  set: (fn: (state: NotificationStore) => void) => void;
 }
 
-const useNotificationStore = create<NotificationStore>((set, _get) =>({
+const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
   set: (fn) => set(produce(fn)),
 }));
