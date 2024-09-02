@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CheckCircleIcon, InformationCircleIcon, XCircleIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/outline";
 import useNotificationStore from "stores/useNotificationStore";
-import { useConnection } from "@solana/wallet-adapter-react";
 import { useNetworkConfiguration } from "contexts/NetworkConfigurationProvider";
 import NotificationSVG from "./SVG/NotificationSVG";
 
@@ -14,10 +13,11 @@ const Notification = () => {
     <div className="pointer-events-none fixed inset-0 z-20 flex items-end px-4 py-6 sm:p-6">
       <div className="flex w-full flex-col">
         {reversedNotifications.map((n, idx) => (
-          <Notification
+          <NotificationItem
             key={`${n.message}${idx}`}
             type={n.type}
             message={n.message}
+            description={n.description}  // Ensure `description` is correctly passed
             txid={n.txid}
             onHide={() => {
               setNotificationStore((state) => {
@@ -36,7 +36,6 @@ const Notification = () => {
 };
 
 const NotificationItem = ({ type, message, description, txid, onHide }) => {
-  const { connection } = useConnection();
   const { networkConfiguration } = useNetworkConfiguration();
 
   useEffect(() => {
@@ -93,3 +92,4 @@ const NotificationItem = ({ type, message, description, txid, onHide }) => {
 };
 
 export default Notification;
+
